@@ -2,7 +2,7 @@ require 'homebus'
 require 'dotenv/load'
 
 class HomebusNetworkLatency::App < Homebus::App
-  DDC = 'org.experimental.homebus.'
+  DDC = 'org.experimental.homebus.network-latency'
 
   def initialize(options)
     @options = options
@@ -10,7 +10,6 @@ class HomebusNetworkLatency::App < Homebus::App
   end
 
   def setup!
-    puts 'hosts', ENV['HOSTS']
     host_names = ENV['HOSTS'].split
 
     @devices = Array.new
@@ -28,7 +27,7 @@ class HomebusNetworkLatency::App < Homebus::App
       results = _ping(device.serial_number)
 
       if options[:verbose]
-        puts results
+        puts device.serial_number, results
       end
 
       device.publish! DDC, results
@@ -39,7 +38,6 @@ class HomebusNetworkLatency::App < Homebus::App
 
   def _ping(ip)
     results = `ping -c 3 #{ip}`
-    puts "ping #{ip}", results
 
     packet_loss = 0
     minimum_latency = 0
@@ -51,12 +49,10 @@ class HomebusNetworkLatency::App < Homebus::App
     lines.each do |line|
       puts line
       if line.match /(\d+\.\d+)\% packet loss/
-        puts "packet loss #{$1}"
         packet_loss = $1.to_f
       end
 
       if line.match /(\d+\.\d+)\/(\d+\.\d+)\/(\d+\.\d+)\/(\d+\.\d+) ms/
-        puts "latencies #{$1}/#{$2}/#{$3}/#{$4}"
         minimum_latency = $1.to_f
         average_latency = $2.to_f
         maximum_latency = $3.to_f
