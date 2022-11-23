@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require 'homebus-network-latency/options'
+require 'homebus-network-latency/app'
+
+options = HomebusNetworkLatency::Options.new
+app = HomebusNetworkLatency::App.new(options.options)
+app.run!
+
