@@ -47,7 +47,6 @@ class HomebusNetworkLatency::App < Homebus::App
 
     lines = results.split "\n"
     lines.each do |line|
-      puts line
       if line.match /(\d+\.\d+)\% packet loss/
         packet_loss = $1.to_f
       end
