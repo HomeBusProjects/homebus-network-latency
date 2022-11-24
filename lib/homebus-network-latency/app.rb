@@ -2,7 +2,7 @@ require 'homebus'
 require 'dotenv/load'
 
 class HomebusNetworkLatency::App < Homebus::App
-  DDC = 'org.experimental.homebus.network-latency'
+  DDC = 'org.homebus.experimental.network-latency'
 
   def initialize(options)
     @options = options
